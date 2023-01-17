@@ -4,7 +4,7 @@ import yake
 
 st.title('Text Analytics')
 
-uploaded_file = st.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Choose a file, has to be .csv with text for analysis in a column named 'text' ")
 
 if uploaded_file is not None:
     # Can be used wherever a "file-like" object is accepted:
@@ -22,6 +22,7 @@ texts = [item.replace("\t", " ") for item in df_clean['text']]
 # Keywords Identification for the whole text corpus and individual documents
 
 # YAKE Config for the entire text corpus
+st.title('_Keyword Extractor_')
 number_of_concepts = st.number_input('How many concepts you want?', key=int)
 kw_extractor = yake.KeywordExtractor()
 language = 'en'
