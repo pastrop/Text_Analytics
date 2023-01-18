@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import yake
 
+#S-BERT packages for embedding calculations
+from sentence_transformers import SentenceTransformer, util
+model = SentenceTransformer('all-MiniLM-L6-v2', device = None)
+model.max_seq_length = 300
+
 # Functions to be used
 
 #Global Extractor
@@ -37,9 +42,10 @@ def doc_keys_extractor(texts):
     keyword_extraction_state_docs.text('Extracting Document Keywords Done...')
     return  distilled_docs      
 
-
-
-
+@st.cache
+def embeds(input):
+    emb = model.encode(input)
+    return emb
 
 
 st.title('Text Analytics')
