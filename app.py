@@ -50,6 +50,7 @@ if uploaded_file is not None:
     # Can be used wherever a "file-like" object is accepted:
     df = pd.read_csv(uploaded_file)
     df_clean = df[df['text'].apply(lambda x: isinstance(x, str))]
+    texts_raw = df['text'].tolist()
     texts = [item.replace("\t", " ") for item in df_clean['text'][:1000]]
     #Create a single blob of text
     corpus = ' '.join(texts)
@@ -92,7 +93,7 @@ if uploaded_file is not None:
             doc_number = st.number_input('Which Document you want to see?', min_value=-1, max_value=len(distilled_docs))
             if doc_number > -1:
                 st.text('Original')
-                st.text(texts[doc_number])
+                st.markdown(texts_raw[doc_number])
                 st.text('Keywords')
                 st.text(distilled_docs[doc_number])
 
