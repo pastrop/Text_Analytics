@@ -99,7 +99,7 @@ if uploaded_file is not None:
             #getting embedding for the distilled_docs
             emb_distilled_input = [' '.join(item) for item in distilled_docs]
             emb_distilled = embeds(emb_distilled_input)
-            target = st.selector('Select Global Concept you want to find the closest documents for',df_keywords)
+            target = st.selectbox('Select Global Concept you want to find the closest documents for',df_keywords)
             target = embeds(target)
             cosine_score = util.cos_sim(target, emb_distilled)
             final_scores = list(enumerate(cosine_score.flatten().tolist()))
