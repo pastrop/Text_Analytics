@@ -128,7 +128,7 @@ if uploaded_file is not None:
             closest = set()
             associated = set()
             for item in res[:10]:
-              if ' '.join(distilled_docs[item[0]]).find(trg) != -1:
+              if ' '.join(distilled_docs[item[0]]).find(target) != -1:
                 closest.update(distilled_docs[item[0]]) 
               else:
                 associated.update(distilled_docs[item[0]]) 
