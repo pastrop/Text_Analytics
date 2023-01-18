@@ -115,14 +115,29 @@ if uploaded_file is not None:
             st.markdown(out_original)  
 
             #Displaying original document and its keywords
-            doc_number = st.number_input('Which Document you want to see?', min_value=-1, max_value=len(distilled_docs))
+            doc_number = st.number_input('Document & Document Keywords Lookup by Index?', min_value=-1, max_value=len(distilled_docs))
             if doc_number > -1:
                 st.text('Original')
                 st.markdown(texts_raw[doc_number])
                 st.text('Keywords')
                 st.text(distilled_docs[doc_number])
 
+            # concepts closeness
+            #(1)keywords co-occuring with with the target concept in the documents closest in meaning 
+            #(2)kewords from the documents that are close in meaning yet doesn't include the target concept
+            closest = set()
+            associated = set()
+            for item in res[:10]:
+              if ' '.join(distilled_docs[item[0]]).find(trg) != -1:
+                closest.update(distilled_docs[item[0]]) 
+              else:
+                associated.update(distilled_docs[item[0]]) 
+            closest.remove(trg)
 
+            st.text('Keywords co-occuring with with the target concept in the 10 documents closest in meaning ') 
+            st.text(closest)
+            st.text('Keywords from the 10 documents closest in meaning to the target concept in which the target is not present')
+            st.text(associated)    
 
 
 
