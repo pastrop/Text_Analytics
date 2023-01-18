@@ -108,7 +108,7 @@ if uploaded_file is not None:
             out_original = []
             for item in res[:5]:
               out_distilled.append(distilled_docs[item[0]])
-              out_original.append(texts_raw[item[0]]) 
+              out_original.append(texts[item[0]]) 
             st.text("5 Documents closest to the selected concept")  
             st.markdown(out_original)  
 
