@@ -96,6 +96,16 @@ if uploaded_file is not None:
         keyword_extraction_state_docs = st.text('Extracting Document keywords...')
         distilled_docs = doc_keys_extractor(texts)
         if distilled_docs:  
+            #getting embedding for the distilled_docs
+            emb_distilled_input = [' '.join(item) for item in distilled_docs]
+            emb_distilled = embeds(emb_distilled_input)
+            target = st.selector('Select Global Concept you want to find the closest documents for',df_keywords)
+            target = embeds(target)
+            cosine_score = util.cos_sim(target, emb_distilled)
+            final_scores = list(enumerate(cosine_score.flatten().tolist()))
+            res = sorted(final_scores, key = lambda x:x[1], reverse=True)
+            st.text(res[3]) #test output
+            #Displaying original document and its keywords
             doc_number = st.number_input('Which Document you want to see?', min_value=-1, max_value=len(distilled_docs))
             if doc_number > -1:
                 st.text('Original')
