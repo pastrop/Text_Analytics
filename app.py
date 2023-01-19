@@ -100,8 +100,8 @@ if uploaded_file is not None:
             emb_distilled_input = [' '.join(item) for item in distilled_docs]
             emb_distilled = embeds(emb_distilled_input)
             target = st.selectbox('Select Global Concept you want to find the closest documents for (precomputed for higest rated concept)',df_keywords)
-            target = embeds(target)
-            cosine_score = util.cos_sim(target, emb_distilled)
+            target_emb = embeds(target)
+            cosine_score = util.cos_sim(target_emb, emb_distilled)
             final_scores = list(enumerate(cosine_score.flatten().tolist()))
             res = sorted(final_scores, key = lambda x:x[1], reverse=True)
             out_distilled = []
@@ -128,7 +128,7 @@ if uploaded_file is not None:
             closest = set()
             associated = set()
             for item in res[:10]:
-              if ' '.join(distilled_docs[item[0]]).find('IPA') != -1:
+              if ' '.join(distilled_docs[item[0]]).find(target) != -1:
                 closest.update(distilled_docs[item[0]]) 
               else:
                 associated.update(distilled_docs[item[0]]) 
