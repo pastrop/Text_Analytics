@@ -120,12 +120,13 @@ if uploaded_file is not None:
             st.markdown(out_original)  
 
             #Displaying original document and its keywords
-            doc_number = st.number_input('Document & Document Keywords Lookup by Index?', min_value=-1, max_value=len(distilled_docs))
-            if doc_number > -1:
-                st.text('Original')
-                st.markdown(texts_raw[doc_number])
-                st.text('Keywords')
-                st.text(distilled_docs[doc_number])
+            with st.expander("Document Lookup"):
+                doc_number = st.number_input('Document & Document Keywords Lookup by Index?', min_value=-1, max_value=len(distilled_docs))
+                if doc_number > -1:
+                    st.text('Original')
+                    st.markdown(texts_raw[doc_number])
+                    st.text('Keywords')
+                    st.text(distilled_docs[doc_number])   
 
             # concepts closeness
             #(1)keywords co-occuring with with the target concept in the documents closest in meaning 
