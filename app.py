@@ -145,12 +145,13 @@ if uploaded_file is not None:
             st.text(set(associated))   
 
             #Vizualization
-            #reducer = umap.UMAP(n_neighbors=20,n_components=2) 
+            pca = PCA(n_components=2)
             #umap_embeds = reducer.fit_transform(emb_texts)
-            #distilled_texts = [' '.join(item) for item in distilled_docs]
-            #target_display = st.selectbox('Select Global Concept you want to dispay the closest documents for (precomputed for higest rated concept)',df_keywords)
-            #creating groupings to be colored by a different color
-            #text_search=[True if item.find(selector.value) != -1 or item.find(selector.value.lower()) != -1 else False for item in distilled_texts]
+            principal_comp = pca.fit_transform(emb_distilled)
+            distilled_texts = [' '.join(item) for item in distilled_docs]
+            target_display = st.selectbox('Select Global Concept you want to dispay the closest documents for (precomputed for higest rated concept)',df_keywords)
+            creating groupings to be colored by a different color
+            text_search=[True if item.find(selector.value) != -1 or item.find(selector.value.lower()) != -1 else False for item in distilled_texts]
 
 
 
