@@ -94,7 +94,18 @@ if uploaded_file is not None:
         keyword_extraction_state = st.text('Extracting Global Concepts...')
         keywords = global_extractor(number_of_concepts,corpus)
         keyword_extraction_state.text('Extracting...done!')
-        keywords_dict = {'global concept':[item[0] for item in keywords], 'score, less the better!':[item[1] for item in keywords]}
+        # counting number of document including the concept
+        count_dict = {}
+        for item in keywords:
+            count_dict[iem[0]]=0
+            for doc in texts:
+                if doc.find(item[0]) != -1:
+                    count_dic['item[0]'] +=1
+        counts= list(count_dict.values())            
+                    
+        keywords_dict = {'global concept':[item[0] for item in keywords], 
+                        'score, less the better!':[item[1] for item in keywords],
+                        '# of docs':counts}
         df_keywords = pd.DataFrame(keywords_dict)
         st.dataframe(df_keywords)
 
@@ -155,6 +166,7 @@ if uploaded_file is not None:
             principal_comp = pca.fit_transform(emb_distilled)
             distilled_texts = [' '.join(item) for item in distilled_docs]
             target_display = st.selectbox('Select Global Concept you want to dispay the closest documents for (precomputed for higest rated concept)',df_keywords)
+            
             #creating groupings to be colored by a different color
             text_search=[True if item.find(target_display) != -1 or item.find(target_display.lower()) != -1 else False for item in distilled_texts]
 
@@ -164,7 +176,7 @@ if uploaded_file is not None:
                 distilled_texts_with_ind.append((item,ind))
             
             # using Altair
-            df_explore = pd.DataFrame(data={'text&doc#': distilled_texts_with_ind, 'groups':text_search})
+            df_explore = pd.DataFrame(data={'Keywords-Doc#': distilled_texts_with_ind, 'groups':text_search})
             df_explore['x'] = principal_comp[:,0]
             df_explore['y'] = principal_comp[:,1]
 
@@ -172,7 +184,7 @@ if uploaded_file is not None:
             chart = alt.Chart(df_explore).mark_circle(size=60).encode(
                 x=alt.X('x',scale=alt.Scale(zero=False)),
                 y=alt.Y('y',scale=alt.Scale(zero=False)),
-                tooltip=['text&doc#'],
+                tooltip=['Keywords-Doc#'],
                 color=alt.condition(alt.datum.groups == True, alt.value('red'),alt.value('blue'))
             ).properties(
                 width=700,
