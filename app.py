@@ -171,6 +171,8 @@ if uploaded_file is not None:
                 height=400
             )
 
+            st.altair_chart(chart, use_container_width=True)
+
 
 
 
