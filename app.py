@@ -97,7 +97,7 @@ if uploaded_file is not None:
         # counting number of document including the concept
         count_dict = {}
         for item in keywords:
-            count_dict[iem[0]]=0
+            count_dict[item[0]]=0
             for doc in texts:
                 if doc.find(item[0]) != -1:
                     count_dic['item[0]'] +=1
