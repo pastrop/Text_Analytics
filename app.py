@@ -151,7 +151,7 @@ if uploaded_file is not None:
             distilled_texts = [' '.join(item) for item in distilled_docs]
             target_display = st.selectbox('Select Global Concept you want to dispay the closest documents for (precomputed for higest rated concept)',df_keywords)
             #creating groupings to be colored by a different color
-            text_search=[True if item.find(selector.value) != -1 or item.find(target_display.lower()) != -1 else False for item in distilled_texts]
+            text_search=[True if item.find(target_display.value) != -1 or item.find(target_display.lower()) != -1 else False for item in distilled_texts]
 
 
 
