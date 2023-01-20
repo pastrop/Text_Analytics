@@ -100,7 +100,7 @@ if uploaded_file is not None:
             count_dict[item[0]]=0
             for doc in texts:
                 if doc.find(item[0]) != -1:
-                    count_dic['item[0]'] +=1
+                    count_dict['item[0]'] +=1
         counts= list(count_dict.values())            
                     
         keywords_dict = {'global concept':[item[0] for item in keywords], 
