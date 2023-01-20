@@ -8,7 +8,8 @@ model = SentenceTransformer('all-MiniLM-L6-v2', device = None)
 model.max_seq_length = 300
 
 #Visualization
-import umap.umap_ as umap
+from sklearn.decomposition import PCA
+#import umap.umap_ as umap
 #import altair as alt
 
 # Functions to be used
