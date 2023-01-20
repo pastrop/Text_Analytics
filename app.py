@@ -12,6 +12,9 @@ from sklearn.decomposition import PCA
 #import umap.umap_ as umap
 import altair as alt
 
+# Wide Layout
+st.set_page_config(layout="wide")
+
 # Functions to be used
 
 #Global Extractor
