@@ -128,16 +128,16 @@ if uploaded_file is not None:
             closest = set()
             associated = set()
             for item in res[:10]:
-              if ' '.join(distilled_docs[item[0]]).find(target) != -1:
+              if texts[item[0]].find(target) != -1:
                 closest.update(distilled_docs[item[0]]) 
               else:
                 associated.update(distilled_docs[item[0]]) 
             closest.remove(target)
 
             st.text('Keywords co-occuring with with the target concept in the 10 documents closest in meaning ') 
-            st.text(closest)
+            st.text(set(closest))
             st.text('Keywords from the 10 documents closest in meaning to the target concept in which the target is not present')
-            st.text(associated)    
+            st.text(set(associated))    
 
 
 
