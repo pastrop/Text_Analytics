@@ -80,7 +80,7 @@ if uploaded_file is not None:
 
     # YAKE Config for the entire text corpus
     st.title('_Keyword Extractor_')
-    number_of_concepts = st.number_input('How many concepts you want?', min_value=0, max_value=100)
+    number_of_concepts = st.number_input('How many concepts do you want to extract?', min_value=0, max_value=100)
     if number_of_concepts > 0:
         #kw_extractor = yake.KeywordExtractor()
         #language = 'en'
@@ -125,7 +125,7 @@ if uploaded_file is not None:
 
             #Displaying original document and its keywords
             with st.expander("Document Lookup"):
-                doc_number = st.number_input('Document & Document Keywords Lookup by Index?', min_value=-1, max_value=len(distilled_docs))
+                doc_number = st.number_input('Document & Document Keywords Lookup by Index', min_value=-1, max_value=len(distilled_docs))
                 if doc_number > -1:
                     st.text('Original')
                     st.markdown(texts_raw[doc_number])
@@ -144,7 +144,7 @@ if uploaded_file is not None:
                 associated.update(distilled_docs[item[0]]) 
             closest.remove(target)
 
-            st.text('Keywords co-occuring with with the target concept in the 10 documents closest in meaning ') 
+            st.text('Keywords co-occuring with with the target concept in the 10 documents closest in meaning') 
             st.text(set(closest))
             st.text('Keywords from the 10 documents closest in meaning to the target concept in which the target is not present')
             st.text(set(associated))   
@@ -158,10 +158,13 @@ if uploaded_file is not None:
             #creating groupings to be colored by a different color
             text_search=[True if item.find(target_display) != -1 or item.find(target_display.lower()) != -1 else False for item in distilled_texts]
 
-
             # Prepare the data to plot and interactive visualization
+            distilled_texts_with_ind = []
+            for ind, item in enumerate(distilled_texts):
+                distilled_texts_with_ind.append((item,ind))
+            
             # using Altair
-            df_explore = pd.DataFrame(data={'text': distilled_texts, 'groups':text_search})
+            df_explore = pd.DataFrame(data={'text & doc#': distilled_texts_with_ind, 'groups':text_search})
             df_explore['x'] = principal_comp[:,0]
             df_explore['y'] = principal_comp[:,1]
 
