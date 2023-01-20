@@ -164,7 +164,7 @@ if uploaded_file is not None:
                 distilled_texts_with_ind.append((item,ind))
             
             # using Altair
-            df_explore = pd.DataFrame(data={'text & doc#': distilled_texts_with_ind, 'groups':text_search})
+            df_explore = pd.DataFrame(data={'text&doc#': distilled_texts_with_ind, 'groups':text_search})
             df_explore['x'] = principal_comp[:,0]
             df_explore['y'] = principal_comp[:,1]
 
@@ -172,7 +172,7 @@ if uploaded_file is not None:
             chart = alt.Chart(df_explore).mark_circle(size=60).encode(
                 x=alt.X('x',scale=alt.Scale(zero=False)),
                 y=alt.Y('y',scale=alt.Scale(zero=False)),
-                tooltip=['text'],
+                tooltip=['text&doc#'],
                 color=alt.condition(alt.datum.groups == True, alt.value('red'),alt.value('blue'))
             ).properties(
                 width=700,
