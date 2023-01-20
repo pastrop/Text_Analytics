@@ -10,7 +10,7 @@ model.max_seq_length = 300
 #Visualization
 from sklearn.decomposition import PCA
 #import umap.umap_ as umap
-#import altair as alt
+import altair as alt
 
 # Functions to be used
 
@@ -154,6 +154,22 @@ if uploaded_file is not None:
             text_search=[True if item.find(target_display) != -1 or item.find(target_display.lower()) != -1 else False for item in distilled_texts]
 
 
+            # Prepare the data to plot and interactive visualization
+            # using Altair
+            df_explore = pd.DataFrame(data={'text': distilled_texts, 'groups':text_search})
+            df_explore['x'] = principal_comp[:,0]
+            df_explore['y'] = principal_comp[:,1]
+
+            # Plot
+            chart = alt.Chart(df_explore).mark_circle(size=60).encode(
+                x=alt.X('x',scale=alt.Scale(zero=False)),
+                y=alt.Y('y',scale=alt.Scale(zero=False)),
+                tooltip=['text'],
+                color=alt.condition(alt.datum.groups == True, alt.value('red'),alt.value('blue'))
+            ).properties(
+                width=700,
+                height=400
+            )
 
 
 
