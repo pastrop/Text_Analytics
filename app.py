@@ -7,6 +7,10 @@ from sentence_transformers import SentenceTransformer, util
 model = SentenceTransformer('all-MiniLM-L6-v2', device = None)
 model.max_seq_length = 300
 
+#Visualization
+import umap.umap_ as umap
+import altair as alt
+
 # Functions to be used
 
 #Global Extractor
@@ -137,7 +141,17 @@ if uploaded_file is not None:
             st.text('Keywords co-occuring with with the target concept in the 10 documents closest in meaning ') 
             st.text(set(closest))
             st.text('Keywords from the 10 documents closest in meaning to the target concept in which the target is not present')
-            st.text(set(associated))    
+            st.text(set(associated))   
+
+            #Vizualization
+            reducer = umap.UMAP(n_neighbors=20,n_components=2) 
+            umap_embeds = reducer.fit_transform(emb_texts)
+            distilled_texts = [' '.join(item) for item in distilled_docs]
+            target_display = st.selectbox('Select Global Concept you want to dispay the closest documents for (precomputed for higest rated concept)',df_keywords)
+            #creating groupings to be colored by a different color
+            text_search=[True if item.find(selector.value) != -1 or item.find(selector.value.lower()) != -1 else False for item in distilled_texts]
+
+
 
 
 
