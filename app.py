@@ -12,6 +12,12 @@ from sklearn.decomposition import PCA
 #import umap.umap_ as umap
 import altair as alt
 
+#Sentiment Analysis
+from datasets import Dataset
+from transformers import pipeline
+from transformers.pipelines.pt_utils import KeyDataset
+from tqdm.auto import tqdm
+
 # Wide Layout
 st.set_page_config(layout="wide")
 
@@ -80,7 +86,7 @@ if uploaded_file is not None:
 
     # YAKE Config for the entire text corpus
     st.title('_Keyword Extractor_')
-    number_of_concepts = st.number_input('How many concepts do you want to extract?', min_value=0, max_value=100)
+    number_of_concepts = st.number_input('How many concepts do you want to extract (max 100 for now)?', min_value=0, max_value=100)
     if number_of_concepts > 0:
         #kw_extractor = yake.KeywordExtractor()
         #language = 'en'
@@ -193,6 +199,7 @@ if uploaded_file is not None:
 
             st.altair_chart(chart, use_container_width=True)
 
+            #Basic Sentiment Analysis for Global Keywords
 
 
 
