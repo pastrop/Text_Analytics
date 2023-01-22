@@ -88,14 +88,8 @@ if uploaded_file is not None:
     st.title('_Keyword Extractor_')
     number_of_concepts = st.number_input('How many concepts do you want to extract (max 100 for now)?', min_value=0, max_value=100)
     if number_of_concepts > 0:
-        #kw_extractor = yake.KeywordExtractor()
-        #language = 'en'
-        #max_ngram_size = 2
-        #deduplication_threshold = 0.9
-        #numOfKeywords = number_of_concepts
 
         #Keyword for the corpus a.k.a Global Concepts
-        #custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_threshold, top=numOfKeywords, features=None)
 
         keyword_extraction_state = st.text('Extracting Global Concepts...')
         keywords = global_extractor(number_of_concepts,corpus)
@@ -200,9 +194,37 @@ if uploaded_file is not None:
             st.altair_chart(chart, use_container_width=True)
 
             #Basic Sentiment Analysis for Global Keywords
-            st.text('test output')
-            with st.expander("Sentiment Analysis"):
-                target = st.selectbox('Select Global Concept you want to find the sentiment for (precomputed for higest rated concept)',df_keywords)
+
+            #Counting a number of document & document ids per global keyword
+            count_dict = {}
+            concepts_doc = {}
+            for item in df_keywords['global concept']:
+                count_dict[item]=0
+                concepts_doc[item] =[]
+                for index, doc in enumerate(texts):
+                    if doc.find(item) != -1:
+                        count_dict[item] +=1
+                        concepts_doc[item].append(index)
+            counts= list(count_dict.values())
+
+            texts_sentiments = []
+            for out in tqdm(pipe(KeyDataset(dataset_sentiment, "text"), batch_size=4, truncation="longest_first")): #May or maynot need tto use Key Dataset
+                texts_sentiments.append(out)
+            if texts_sentiments:    
+                with st.expander("Sentiment Analysis"):
+                    target_sentiment = st.selectbox('Select Global Concept you want to find the sentiment for (precomputed for higest rated concept)',df_keywords)
+
+                    #find sentiment by concept POC for one concept for now
+                    sentiment = []
+                    for index, item in enumerate(texts_sentiments):
+                      if index in concepts_doc[target_sentiment]:
+                        sentiment.append(item)
+
+                    positive, negative = 0,0
+                    for outcome in sentiment:
+                      for item in outcome:    
+                        if item['label'] =='NEGATIVE' and item['score']>0.5: negative +=1
+                        if item['label'] =='POSITIVE' and item['score']>0.5: positive +=1                        
 
 
 
