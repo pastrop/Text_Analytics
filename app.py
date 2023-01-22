@@ -207,6 +207,12 @@ if uploaded_file is not None:
                         concepts_doc[item].append(index)
             counts= list(count_dict.values())
 
+            #dataset for the sentiment analysis POC
+            dict_sentiment = {'idx':list(range(500)), "text":texts[:500]}
+            dataset_sentiment = Dataset.from_dict(dict_sentiment)
+
+            pipe = pipeline("sentiment-analysis",  model="siebert/sentiment-roberta-large-english", return_all_scores=True)
+
             texts_sentiments = []
             for out in tqdm(pipe(KeyDataset(dataset_sentiment, "text"), batch_size=4, truncation="longest_first")): #May or maynot need tto use Key Dataset
                 texts_sentiments.append(out)
