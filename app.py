@@ -208,7 +208,7 @@ if uploaded_file is not None:
             counts= list(count_dict.values())
 
             #dataset for the sentiment analysis POC
-            dict_sentiment = {'idx':list(range(500)), "text":texts[:500]}
+            dict_sentiment = {'idx':list(range(100)), "text":texts[:100]}
             dataset_sentiment = Dataset.from_dict(dict_sentiment)
 
             pipe = pipeline("sentiment-analysis",  model="siebert/sentiment-roberta-large-english", return_all_scores=True)
