@@ -12,11 +12,6 @@ from sklearn.decomposition import PCA
 #import umap.umap_ as umap
 import altair as alt
 
-#Sentiment Analysis
-from datasets import Dataset
-from transformers import pipeline
-from transformers.pipelines.pt_utils import KeyDataset
-from tqdm.auto import tqdm
 
 # Wide Layout
 st.set_page_config(layout="wide")
@@ -193,7 +188,7 @@ if uploaded_file is not None:
 
             st.altair_chart(chart, use_container_width=True)
 
-            #Basic Sentiment Analysis for Global Keywords
+            #Basic Analysis for Global Keywords -- Future
 
             #Counting a number of document & document ids per global keyword
             count_dict = {}
@@ -206,31 +201,5 @@ if uploaded_file is not None:
                         count_dict[item] +=1
                         concepts_doc[item].append(index)
             counts= list(count_dict.values())
-
-            #dataset for the sentiment analysis POC
-            dict_sentiment = {'idx':list(range(100)), "text":texts[:100]}
-            dataset_sentiment = Dataset.from_dict(dict_sentiment)
-
-            pipe = pipeline("sentiment-analysis",  model="siebert/sentiment-roberta-large-english", return_all_scores=True)
-
-            texts_sentiments = []
-            for out in tqdm(pipe(KeyDataset(dataset_sentiment, "text"), batch_size=4, truncation="longest_first")): #May or maynot need tto use Key Dataset
-                texts_sentiments.append(out)
-            if texts_sentiments:    
-                with st.expander("Sentiment Analysis"):
-                    target_sentiment = st.selectbox('Select Global Concept you want to find the sentiment for (precomputed for higest rated concept)',df_keywords)
-
-                    #find sentiment by concept POC for one concept for now
-                    sentiment = []
-                    for index, item in enumerate(texts_sentiments):
-                      if index in concepts_doc[target_sentiment]:
-                        sentiment.append(item)
-
-                    positive, negative = 0,0
-                    for outcome in sentiment:
-                      for item in outcome:    
-                        if item['label'] =='NEGATIVE' and item['score']>0.5: negative +=1
-                        if item['label'] =='POSITIVE' and item['score']>0.5: positive +=1                        
-
 
 
