@@ -200,7 +200,9 @@ if uploaded_file is not None:
             st.altair_chart(chart, use_container_width=True)
 
             #Basic Sentiment Analysis for Global Keywords
-
+            st.text('test output')
+            with st.expander("Sentiment Analysis"):
+                target = st.selectbox('Select Global Concept you want to find the sentiment for (precomputed for higest rated concept)',df_keywords)
 
 
 
