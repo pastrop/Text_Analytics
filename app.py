@@ -123,11 +123,11 @@ if uploaded_file is not None:
             for item in res[:5]:
               out_distilled.append(distilled_docs[item[0]])
               out_original.append(texts[item[0]])
-            with st.expander('Display documents closest in meaning to the selected concept'):
+            with st.expander('Display keywords in documents closest in meaning to the selected concept'):
                 st.text("indexes of 5 documents closest to the selected concept documents & cosine scores") 
                 st.text(res[:5])  
-                st.text("5 Documents closest to the selected concept")  
-                st.markdown(out_original)  
+                st.text("Kewords in 5 Documents closest in meaning to the selected concept")  
+                st.markdown(out_distilled)  
 
             #Displaying original document and its keywords
             with st.expander("Document Lookup"):
@@ -160,7 +160,7 @@ if uploaded_file is not None:
             #umap_embeds = reducer.fit_transform(emb_texts)
             principal_comp = pca.fit_transform(emb_distilled)
             distilled_texts = [' '.join(item) for item in distilled_docs]
-            target_display = st.selectbox('Select Global Concept you want to dispay the closest documents for (precomputed for higest rated concept)',df_keywords)
+            target_display = st.selectbox('Select Global Concept you want to see documents with (precomputed for higest rated concept)',df_keywords)
             
             #creating groupings to be colored by a different color
             text_search=[True if item.find(target_display) != -1 or item.find(target_display.lower()) != -1 else False for item in distilled_texts]
